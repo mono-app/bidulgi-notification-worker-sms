@@ -4,6 +4,7 @@ const uuid = require("uuid/v4");
 const moment = require("moment");
 const DatabaseAPI = require("@app/api/database");
 const UserAPI = require("@app/api/user")
+const SmsAPI = require("@app/api/sms")
 
 class NotificationAPI{
 
@@ -144,7 +145,7 @@ class NotificationAPI{
    * @param {Notification} notification 
    */
   static async sendSms(notification){
-   
+    SmsAPI.sendSms(notification.recipient.id, notification.content)
   }
 
 }

@@ -40,7 +40,6 @@ class User{
    */
   static fromSnapshot(documentSnapshot){
     const data = documentSnapshot.data();
-    console.log(data)
     const user = new User(documentSnapshot.id, data.email, data.isCompleteSetup)
     
     user.creationTime = data.creationTime

@@ -1,6 +1,9 @@
 class QueueAPI{
 
-  static get getQueue(recipientType){
+  /**
+   * @param {string} recipientType 
+   */
+  static getQueue(recipientType){
     const queueName = (recipientType==="phoneNumber")? "sms.queue" : (recipientType==="mono")? "mono.queue" : "email.queue"
     return queueName;
   }

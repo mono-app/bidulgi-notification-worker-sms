@@ -19,6 +19,7 @@
     "libphonenumber-js": "^1.7.29",
     "module-alias": "2.2.2",
     "moment": "2.24.0",
+    "nexmo": "2.5.1",
     "pg": "7.12.1",
     "uuid": "3.3.3"
   }
