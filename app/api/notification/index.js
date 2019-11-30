@@ -145,7 +145,22 @@ class NotificationAPI{
    * @param {Notification} notification 
    */
   static async sendSms(notification){
-    SmsAPI.sendSms(notification.recipient.id, notification.content)
+    SmsAPI.sendSms(notification.sms.provider, notification.sms.apiKey, notification.sms.apiSecret, notification.recipient.id, notification.content, function(err, responseData){
+      if (err) {
+        NotificationAPI.updateStatusNotificationById(notification.id, StatusUtils.FAILED)
+        console.log(err.stack);
+        throw err
+      } else {
+        if(responseData.messages[0]['status'] === "0") {
+           NotificationAPI.updateStatusNotificationById(notification.id, StatusUtils.SENT)
+          console.log("Message sent successfully.");
+        } else {
+          NotificationAPI.updateStatusNotificationById(notification.id, StatusUtils.FAILED)
+          console.log(`Message failed with error: ${responseData.messages[0]['error-text']}`);
+          throw new CustomError('sms-api/error', responseData.messages[0]['error-text'])
+        }
+      }
+    })
   }
 
 }

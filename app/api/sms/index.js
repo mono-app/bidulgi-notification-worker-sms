@@ -6,26 +6,19 @@ class SmsAPI{
    *  @param {PhoneNumber} phoneNumberDestination
    *  @param {string} content
    */
-  static sendSms(phoneNumberDestination, content){
+  static sendSms(smsProvider, smsApikey, smsApiSecret, phoneNumberDestination, content, returnFunc){
+      if(smsProvider==="nexmo") SmsAPI.nexmo(smsApikey, smsApiSecret, phoneNumberDestination, content, returnFunc)
+  }
+
+  static nexmo(smsApikey, smsApiSecret, phoneNumberDestination, content, returnFunc){
     const nexmo = new Nexmo({
-      apiKey: process.env.NEXMO_API_KEY,
-      apiSecret: process.env.NEXMO_API_SECRET
-    })
-
+        apiKey: smsApikey,
+        apiSecret: smsApiSecret
+      })
+  
     nexmo.message.sendSms("Mono", phoneNumberDestination, content, (err, responseData) => {
-        if (err) {
-            console.log(err);
-            throw err
-        } else {
-            if(responseData.messages[0]['status'] === "0") {
-                console.log("Message sent successfully.");
-            } else {
-                console.log(`Message failed with error: ${responseData.messages[0]['error-text']}`);
-                throw new CustomError('sms-api/error', responseData.messages[0]['error-text'])
-            }
-        }
+        returnFunc(err, responseData)
     })
-
   }
 }
 module.exports = SmsAPI;
